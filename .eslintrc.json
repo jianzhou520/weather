@@ -1,0 +1,124 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "legacyDecorators": true
+    },
+    "useJSXTextNode": true
+  },
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "settings": {
+    "react": {
+      "version": "17.0.0"
+    }
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "airbnb-base",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended"
+  ],
+  "rules": {
+    "template-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "space-before-function-paren": [
+      "error",
+      "always"
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "func-call-spacing": [
+      "error",
+      "never"
+    ],
+    "func-names": [
+      "warn",
+      "always",
+      {
+        "generators": "never"
+      }
+    ],
+    "arrow-body-style": [
+      "error",
+      "as-needed"
+    ],
+    "max-len": "off",
+    "react/display-name": "off",
+    "camelcase": "off",
+    "no-debugger": ["warn"],
+    "class-methods-use-this": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "no-param-reassign": "off",
+    "no-nested-ternary": "off",
+    "no-unused-vars": "off",
+    // "@typescript-eslint/no-unused-vars": ["error", {
+    //   "args": "after-used",
+    //   "ignoreRestSiblings": true
+    // }],
+    "no-useless-escape": "off",
+    "no-console": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
+    "react/no-unknown-property": "off",
+    "react/no-array-index-key": [
+      "warn"
+    ],
+    "react/jsx-wrap-multilines": [
+      "error",
+      {
+        "declaration": "parens-new-line",
+        "assignment": "parens-new-line",
+        "return": "parens-new-line",
+        "arrow": "parens-new-line",
+        "condition": "parens-new-line",
+        "logical": "parens-new-line",
+        "prop": "parens-new-line"
+      }
+    ],
+    "react/jsx-closing-bracket-location": [
+      "error",
+      "line-aligned"
+    ],
+    "react/jsx-tag-spacing": [
+      "error",
+      {
+        "beforeSelfClosing": "always",
+        "afterOpening": "never",
+        "beforeClosing": "never"
+      }
+    ],
+    "react/jsx-curly-spacing": [
+      "error",
+      {
+        "when": "always",
+        "spacing": {
+          "objectLiterals": "never"
+        },
+        "children": true
+      }
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "jsx-quotes": [
+      "error",
+      "prefer-double"
+    ]
+  },
+  "globals": {
+    "JSX": "readonly"
+  }
+}

@@ -1,0 +1,94 @@
+.view__detail {
+  min-height: 100vh;
+  min-width: 100vw;
+  background: white;
+
+  .header {
+    padding: 0 20px;
+  }
+
+  .weather-base {
+    display: flex;
+    padding-top: 130px;
+    align-items: center;
+    .naming {
+      flex: 1;
+      .name {
+        white-space: pre-wrap;
+        display: inline-block;
+        font-size: 30px;
+        line-height: 36px;
+        font-weight: 700;
+        text-align: right;
+        &::after {
+          content: ',';
+          position: absolute;
+          transform: translate3d(2px, -100%, 0);
+        }
+      }
+      .value {
+        font-size: 96px;
+        line-height: 115px;
+        font-weight: 700;
+        &::after {
+          content: '℃';
+          font-size: 24px;
+          line-height: 29px;
+          font-weight: 500;
+          vertical-align: super;
+        }
+      }
+    }
+    .icon {
+      width: 100px;
+      height: 100px;
+      align-self: flex-start;
+      transform: translate3d(0, -90px, 0);
+    }
+  }
+  .weather-tags {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .tag-item {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 700;
+    &::before {
+      content: '';
+      display: inline-block;
+      margin-right: 5px;
+      width: 24px;
+      height: 24px;
+      vertical-align: middle;
+      background-size: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    &:nth-of-type(1) {
+      background: rgba(101, 142, 217, 0.1);
+      color: #658ED9;
+      &::before {
+        background-image: url('@/icon/icon_precip-theme.png');
+      }
+    }
+    &:nth-of-type(2) {
+      background: rgba(216, 97, 145, 0.1);
+      color: #D86191;
+      &::before {
+        background-image: url('@/icon/icon_precip-theme.png');
+      }
+    }
+    &:nth-of-type(3) {
+      background: rgba(94, 79, 193, 0.1);
+      color: #5E4FC1;
+      &::before {
+        background-image: url('@/icon/icon_precip-theme.png');
+      }
+    }
+  }
+}
