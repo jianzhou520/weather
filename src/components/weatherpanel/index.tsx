@@ -1,29 +1,13 @@
 import { PureComponent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { renderIcon } from '@/utils'
+import { WeatherInfo } from '@/services/weather'
 import styles from './index.module.less'
+import { dayName } from '@/constants'
 
-export interface WeatherInfo {
+export interface WeatherPanelInfo extends WeatherInfo {
   /** 地理位置名称信息 */
   name: string;
-  /** 天气状况和图标的代码 */
-  icon: string;
-  /** 温度，默认单位：摄氏度 */
-  temp: string;
-  /** 数据观测时间 */
-  obsTime: string;
-  /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
-  text: string;
-  /** 风向 */
-  windDir: string;
-  /** 风力等级 */
-  windScale: string;
-  /** 风速，公里/小时 */
-  windSpeed: string;
-  /** 当前小时累计降水量，默认单位：毫米 */
-  precip: string;
-  /** 相对湿度，百分比数值 */
-  humidity: string;
   /** 经度 */
   longitude?: number;
   /** 纬度 */
@@ -31,7 +15,7 @@ export interface WeatherInfo {
 }
 
 interface WeatherPanelProps {
-  data: WeatherInfo;
+  data: WeatherPanelInfo;
 }
 
 export default function WeatherPanel (props: WeatherPanelProps) {
@@ -40,16 +24,7 @@ export default function WeatherPanel (props: WeatherPanelProps) {
   function renderTime () {
     const date = new Date()
     const hours = date.getHours()
-    const dayName = [
-      '周一',
-      '周二',
-      '周三',
-      '周四',
-      '周五',
-      '周六',
-      '周日',
-    ]
-    return `${ dayName[date.getDay() - 1] }, ${ hours > 12 ? hours - 12 : hours }${ hours > 12 ? 'pm' : 'am' }`
+    return `${ dayName[date.getDay()] }, ${ hours > 12 ? hours - 12 : hours }${ hours > 12 ? 'pm' : 'am' }`
   }
 
   function handleDetailView (longitude: number, latitude: number) {

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { queryLocationInfo, queryLocationWeather } from '@/services/weather'
-import WeatherPanel, { WeatherInfo } from '@/components/weatherpanel/index'
+import WeatherPanel, { WeatherPanelInfo } from '@/components/weatherpanel/index'
 import './index.less'
 
 export default function Home () {
-  const [weatherInfo, setWeatherInfo] = useState<WeatherInfo>({
+  const [weatherInfo, setWeatherInfo] = useState<WeatherPanelInfo>({
     name: '--',
     icon: '',
     temp: '--',
@@ -16,6 +16,14 @@ export default function Home () {
     precip: '--',
     humidity: '--',
   })
+
+  function handleWeatherInfoInit () {
+    try {
+      setWeatherInfo(JSON.parse(window.localStorage.getItem('weatherInfo') || '{}'))
+    } catch (error) {
+      console.log('weather info init error')
+    }
+  }
 
   /**
    * @description 更新当前位置信息
@@ -71,6 +79,7 @@ export default function Home () {
   }
 
   useEffect(() => {
+    handleWeatherInfoInit()
     // 获取地理位置信息
     navigator.geolocation.getCurrentPosition(async (pos) => {
       const {

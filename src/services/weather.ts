@@ -70,6 +70,39 @@ export async function queryLocationInfo (
   )
 }
 
+export interface WeatherInfo {
+  /** 数据观测时间 */
+  obsTime: string;
+  /** 温度，默认单位：摄氏度 */
+  temp: string;
+  /** 体感温度，默认单位：摄氏度 */
+  feelsLike?: string;
+  /** 天气状况和图标的代码 */
+  icon: string;
+  /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
+  text: string;
+  /** 风向360角度 */
+  wind360?: string;
+  /** 风向 */
+  windDir: string;
+  /** 风力等级 */
+  windScale: string;
+  /** 风速，公里/小时 */
+  windSpeed: string;
+  /** 相对湿度，百分比数值 */
+  humidity: string;
+  /** 当前小时累计降水量，默认单位：毫米 */
+  precip: string;
+  /** 大气压强，默认单位：百帕 */
+  pressure?: string;
+  /** 能见度，默认单位：公里 */
+  vis?: string;
+  /** 云量，百分比数值。可能为空 */
+  cloud?: string;
+  /** 露点温度。可能为空 */
+  dew?: string;
+}
+
 /**
  * @descripiton 查询地理位置实时天气
  * @param { number } longitude 经度
@@ -81,44 +114,20 @@ export async function queryLocationWeather (
 ): Promise<{
   /** 当前数据的响应式页面，便于嵌入网站或应用 */
   fxLink: string;
-  now: {
-    /** 数据观测时间 */
-    obsTime: string;
-    /** 温度，默认单位：摄氏度 */
-    temp: string;
-    /** 体感温度，默认单位：摄氏度 */
-    feelsLike: string;
-    /** 天气状况和图标的代码 */
-    icon: string;
-    /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
-    text: string;
-    /** 风向360角度 */
-    wind360: string;
-    /** 风向 */
-    windDir: string;
-    /** 风力等级 */
-    windScale: string;
-    /** 风速，公里/小时 */
-    windSpeed: string;
-    /** 相对湿度，百分比数值 */
-    humidity: string;
-    /** 当前小时累计降水量，默认单位：毫米 */
-    precip: string;
-    /** 大气压强，默认单位：百帕 */
-    pressure: string;
-    /** 能见度，默认单位：公里 */
-    vis: string;
-    /** 云量，百分比数值。可能为空 */
-    cloud?: string;
-    /** 露点温度。可能为空 */
-    dew?: string;
-  };
+  now: WeatherInfo;
 }> {
   return axios.get(
     getSignature(`
       https://devapi.qweather.com/v7/weather/now?location=${ longitude },${ latitude }
     `),
   )
+}
+
+export interface WeatherHourly extends WeatherInfo {
+  /** 预报时间 */
+  fxTime: string;
+  /** 逐小时预报降水概率，百分比数值 */
+  pop?: string;
 }
 
 /**
@@ -128,42 +137,74 @@ export async function queryLocationWeather (
 export async function queryHourlyWeather (
   location: string,
 ): Promise<{
-  hourly: {
-    /** 预报时间 */
-    fxTime: string;
-    /** 温度，默认单位：摄氏度 */
-    temp: string;
-    /** 天气状况和图标的代码 */
-    icon: string;
-    /** 天气状况的文字描述，包括阴晴雨雪等天气状态的描述 */
-    text: string;
-    /** 风向360角度 */
-    wind360: string;
-    /** 风向 */
-    windDir: string;
-    /** 风力等级 */
-    windScale: string;
-    /** 风速，公里/小时 */
-    windSpeed: string;
-    /** 相对湿度，百分比数值 */
-    humidity: string;
-    /** 逐小时预报降水概率，百分比数值 */
-    pop?: string;
-    /** 当前小时累计降水量，默认单位：毫米 */
-    precip: string;
-    /** 大气压强，默认单位：百帕 */
-    pressure: string;
-    /** 云量，百分比数值 */
-    cloud?: string;
-    /** 露点温度 */
-    dew?: string;
-  }[];
+  hourly: WeatherHourly[];
 }> {
   return axios.get(
     getSignature(`
       https://devapi.qweather.com/v7/weather/24h?location=${ location }
     `),
   )
+}
+
+export interface WeatherDaily {
+  /** 预报日期 */
+  fxDate: string;
+  /** 周几显示 */
+  dayName?: string;
+  /** 日出时间 */
+  sunrise: string;
+  /** 日落时间 */
+  sunset: string;
+  /** 月升时间 */
+  moonrise: string;
+  /** 月落时间 */
+  moonset: string;
+  /** 月相名称 */
+  moonPhase: string;
+  /** 月相图标代码 */
+  moonPhaseIcon: string;
+  /** 预报当天最高温度 */
+  tempMax: string;
+  /** 预报当天最低温度 */
+  tempMin: string;
+  /** 预报白天天气状况的图标代码 */
+  iconDay: string;
+  /** 天气图标对应到系统的图标URL */
+  iconUrl: string;
+  /** 预报白天天气状况文字描述 */
+  textDay: string;
+  /** 预报夜间天气状况的图标代码 */
+  iconNight: string;
+  /** 预报晚间天气状况文字描述 */
+  textNight: string;
+  /** 预报白天风向360角度 */
+  wind360Day: string;
+  /** 预报白天风向 */
+  windDirDay: string;
+  /** 预报白天风力等级 */
+  windScaleDay: string;
+  /** 预报白天风速，公里/小时 */
+  windSpeedDay: string;
+  /** 预报夜间风向360角度 */
+  wind360Night: string;
+  /** 预报夜间当天风向 */
+  windDirNight: string;
+  /** 预报夜间风力等级 */
+  windScaleNight: string;
+  /** 预报夜间风速，公里/小时 */
+  windSpeedNight: string;
+  /** 相对湿度，百分比数值 */
+  humidity: string;
+  /** 预报当天总降水量，默认单位：毫米 */
+  precip: string;
+  /** 大气压强，默认单位：百帕 */
+  pressure: string;
+  /** 能见度，默认单位：公里 */
+  vis: string;
+  /** 云量，百分比数值 */
+  cloud?: string;
+  /** 紫外线强度指数 */
+  uvIndex: string;
 }
 
 /**
@@ -173,62 +214,7 @@ export async function queryHourlyWeather (
 export async function queryWeeklyWeather (
   location: string,
 ): Promise<{
-  daily: {
-    /** 预报日期 */
-    fxDate: string;
-    /** 日出时间 */
-    sunrise: string;
-    /** 日落时间 */
-    sunset: string;
-    /** 月升时间 */
-    moonrise: string;
-    /** 月落时间 */
-    moonset: string;
-    /** 月相名称 */
-    moonPhase: string;
-    /** 月相图标代码 */
-    moonPhaseIcon: string;
-    /** 预报当天最高温度 */
-    tempMax: string;
-    /** 预报当天最低温度 */
-    tempMin: string;
-    /** 预报白天天气状况的图标代码 */
-    iconDay: string;
-    /** 预报白天天气状况文字描述 */
-    textDay: string;
-    /** 预报夜间天气状况的图标代码 */
-    iconNight: string;
-    /** 预报晚间天气状况文字描述 */
-    textNight: string;
-    /** 预报白天风向360角度 */
-    wind360Day: string;
-    /** 预报白天风向 */
-    windDirDay: string;
-    /** 预报白天风力等级 */
-    windScaleDay: string;
-    /** 预报白天风速，公里/小时 */
-    windSpeedDay: string;
-    /** 预报夜间风向360角度 */
-    wind360Night: string;
-    /** 预报夜间当天风向 */
-    windDirNight: string;
-    /** 预报夜间风力等级 */
-    windScaleNight: string;
-    /** 预报夜间风速，公里/小时 */
-    windSpeedNight: string;
-    /** 相对湿度，百分比数值 */
-    humidity: string;
-    /** 预报当天总降水量，默认单位：毫米 */
-    precip: string;
-    /** 大气压强，默认单位：百帕 */
-    pressure: string;
-    /** 能见度，默认单位：公里 */
-    vis: string;
-    /** 云量，百分比数值 */
-    cloud?: string;
-    /** 紫外线强度指数 */
-    uvIndex: string;
-  }[];
+  daily: WeatherDaily[];
 }> {
   return axios.get(
     getSignature(`

@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@antv/f2": "^4.0.15",
     "axios": "^0.26.1",
     "blueimp-md5": "^2.19.0",
     "react": "^18.0.0",

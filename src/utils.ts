@@ -1,9 +1,9 @@
 /**
  * @description 根据天气图标icon值返回具体图标
  */
-export function renderIcon (iconCode: string) {
+export function renderIcon (iconCode: string, day?: boolean) {
   const date = new Date()
-  const isNight = date.getHours() > 19
+  const isNight = !day && date.getHours() > 19
   if (!iconCode) {
     return ''
   }
