@@ -37,7 +37,7 @@ function lazyRender (config: RouteConfig) {
 function App () {
   return (
     <div className="App">
-      <React.Suspense fallback={ <>loading...</> }>
+      <React.Suspense fallback={ <></> }>
         <BrowserRouter>
           <Routes>
             { routes.map((routeConfig) => lazyRender(routeConfig)) }

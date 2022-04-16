@@ -13,8 +13,8 @@ import { WeatherPanelInfo } from '@/components/weatherpanel'
 import {
   queryHourlyWeather,
   queryWeeklyWeather,
-  WeatherHourly,
   WeatherDaily,
+  WeatherHourly,
 } from '@/services/weather'
 import { renderIcon } from '@/utils'
 import './index.less'
@@ -33,6 +33,7 @@ export default function Detail () {
     precip: '--',
     humidity: '--',
   })
+  const [hourlyWeather, setHourlyWeather] = useState<WeatherHourly[]>([])
   const [dailyWeather, setDailyWeather] = useState<WeatherDaily[]>([])
   const location = decodeURIComponent(useParams().location!)
   const navigate = useNavigate()
@@ -53,66 +54,48 @@ export default function Detail () {
    * @desription 获取小时制天气
    */
   async function handleHourlyWeatherInit () {
-    const { hourly = [] } = await queryHourlyWeather(location)
-    const tempList = hourly.map((item) => +item.temp)
-    console.log(...tempList)
-    console.log(Math.floor(Math.min(...tempList)) - 1)
-    console.log(Math.floor(Math.max(...tempList)) + 1)
-    console.log(hourly.slice(-1)[0].fxTime)
-    const hourlyScale = {
-      fxTime: {
-        type: 'timeCat',
-        tickCount: 24,
-        nice: false,
-        formatter: (fxTime: number) => {
-          const hours = new Date(fxTime).getHours()
-          return `${ hours > 12 ? hours - 12 : hours }${ hours > 12 ? 'pm' : 'am' }`
-        },
-      },
-      temp: {
-        type: 'linear',
-        timkCount: 1,
-        min: Math.min(0, Math.floor(Math.min(...tempList)) - 1),
-        alias: '温度',
-      },
+    let hourly: WeatherHourly[] = []
+    try {
+      const res = await queryHourlyWeather(location)
+      hourly = res.hourly
+      window.localStorage.setItem('weatherHourly', JSON.stringify(hourly))
+    } catch (error) {
+      console.log('data from netwook error')
     }
-    const context = (document.querySelector('#container') as HTMLCanvasElement).getContext('2d') || undefined
-    const HourlyChart = (
-      <Canvas context={ context }>
-        <Chart data={ hourly } scale={ hourlyScale }>
-          <Axis field="fxTime" style={{ grid: { opacity: 0 }, label: { fontFamily: 'Alegreya Sans', fontWeight: 'bold' } }} />
-          <Axis field="temp" visible={ false } />
-          <Line x="fxTime" y="temp" shape="smooth" color="#E9C939" />
-          <Area x="fxTime" y="temp" color="rgba(233, 201, 57, 0.25)" />
-          <Point x="fxTime" y="temp" color="#E9C939" />
-          {
-            hourly.map((item) => (
-              <TextGuide
-                records={ [item] }
-                key={ item.fxTime }
-                content={ `${ item.temp }℃` }
-                offsetX={ -12 }
-                offsetY={ -12 }
-              />
-            ))
-          }
-        </Chart>
-      </Canvas>
-    )
-    const renderChart = new Canvas(HourlyChart.props)
-    renderChart.render()
+    if (!hourly.length) {
+      try {
+        hourly = JSON.parse(window.localStorage.getItem('weatherHourly') || '[]')
+      } catch (error) {
+        console.log('data from storage error')
+      }
+    }
+    setHourlyWeather(hourly)
   }
 
   /**
    * @description 获取一周天气
    */
   async function handleWeeklyWeatherInit () {
-    const { daily = [] } = await queryWeeklyWeather(location)
-    setDailyWeather(daily.map((item) => ({
-      ...item,
-      dayName: dayName[new Date(item.fxDate).getDay()],
-      iconUrl: renderIcon(item.iconDay, true),
-    })))
+    let weatherDaily: WeatherDaily[] = []
+    try {
+      const { daily = [] } = await queryWeeklyWeather(location)
+      weatherDaily = daily.map((item) => ({
+        ...item,
+        dayName: dayName[new Date(item.fxDate).getDay()],
+        iconUrl: renderIcon(item.iconDay, true),
+      }))
+      window.localStorage.setItem('weatherDaily', JSON.stringify(weatherDaily))
+    } catch (error) {
+      console.log('data from network error')
+    }
+    if (!weatherDaily.length) {
+      try {
+        weatherDaily = JSON.parse(window.localStorage.getItem('weatherDaily') || '[]')
+      } catch (error) {
+        console.log('data from storage error')
+      }
+    }
+    setDailyWeather(weatherDaily)
   }
 
   useEffect(() => {
@@ -120,6 +103,54 @@ export default function Detail () {
     handleHourlyWeatherInit()
     handleWeeklyWeatherInit()
   }, [])
+
+  useEffect(() => {
+    if (hourlyWeather.length) {
+      const tempList = hourlyWeather.map((item) => +item.temp)
+      const hourlyScale = {
+        fxTime: {
+          type: 'timeCat',
+          tickCount: 24,
+          nice: false,
+          formatter: (fxTime: number) => {
+            const hours = new Date(fxTime).getHours()
+            return `${ hours > 12 ? hours - 12 : hours }${ hours > 12 ? 'pm' : 'am' }`
+          },
+        },
+        temp: {
+          type: 'linear',
+          timkCount: 1,
+          min: Math.min(0, Math.floor(Math.min(...tempList)) - 1),
+          alias: '温度',
+        },
+      }
+      const context = (document.querySelector('#container') as HTMLCanvasElement).getContext('2d') || undefined
+      const HourlyChart = (
+        <Canvas context={ context }>
+          <Chart data={ hourlyWeather } scale={ hourlyScale }>
+            <Axis field="fxTime" style={{ grid: { opacity: 0 }, label: { fontFamily: 'Alegreya Sans', fontWeight: 'bold', fontSize: 14 * window.devicePixelRatio } }} />
+            <Axis field="temp" visible={ false } />
+            <Line x="fxTime" y="temp" shape="smooth" color="#E9C939" />
+            <Area x="fxTime" y="temp" color="rgba(233, 201, 57, 0.25)" />
+            <Point x="fxTime" y="temp" color="#E9C939" />
+            {
+              hourlyWeather.map((item) => (
+                <TextGuide
+                  records={ [item] }
+                  key={ item.fxTime }
+                  content={ `${ item.temp }℃` }
+                  offsetX={ -12 }
+                  offsetY={ -12 }
+                />
+              ))
+            }
+          </Chart>
+        </Canvas>
+      )
+      const renderChart = new Canvas(HourlyChart.props)
+      renderChart.render()
+    }
+  }, [hourlyWeather])
 
   const {
     name,

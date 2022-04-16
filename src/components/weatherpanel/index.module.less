@@ -32,8 +32,6 @@
   display: flex;
   align-items: center;
 }
-.weather-temp {
-}
 .temp-value {
   position: relative;
   font-size: 64px;
@@ -143,4 +141,18 @@
 .addition-value {
   flex: 1;
   text-align: right;
+}
+
+@media (min-aspect-ratio: 4/3) {
+  .component {
+    margin: 32vmin 0 0 18vmin;
+    padding: 14vmin 8vmin 8vmin;
+  }
+  .addition {
+    top: 20%;
+    bottom: unset;
+    left: unset;
+    right: 0;
+    transform: translateX(140%);
+  }
 }
