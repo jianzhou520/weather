@@ -106,7 +106,7 @@ export default function Home () {
       } else {
         window.alert(`获取位置信息失败：${ err.message }`)
       }
-    }, { maximumAge: 60000 })
+    }, { maximumAge: 60000, timeout: 45000 })
   }, [weatherInfo.name])
 
   return (
