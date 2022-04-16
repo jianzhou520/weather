@@ -3,7 +3,8 @@ This is a simple webapp with basic weather infomation display. Contains hourly a
 
 # Live deploy
 This project was deployed on personal websit and my github pages, you can visit via this tow ways
-https://m.mypreciouslife.top/weather/
+* personal site https://m.mypreciouslife.top/weather/
+* github pages https://jianzhou520.github.io/weather/
 
 # Issue
 If you find any bugs or have and features recommend, open an issue is welcomed
