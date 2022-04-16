@@ -101,7 +101,10 @@ export default function Home () {
           setWeatherInfo(JSON.parse(info))
         } catch (error) {
           console.log(error)
+          window.alert(`获取位置信息失败：${ err.message }`)
         }
+      } else {
+        window.alert(`获取位置信息失败：${ err.message }`)
       }
     }, { maximumAge: 60000 })
   }, [weatherInfo.name])
