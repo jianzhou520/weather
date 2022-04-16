@@ -1,3 +1,16 @@
+import DaySun from '@/icon/day_sun.png'
+import NightSun from '@/icon/night_sun.png'
+import DayClouds from '@/icon/day_clouds.png'
+import NightClouds from '@/icon/night_clouds.png'
+import DayWind from '@/icon/day_wind.png'
+import NightWind from '@/icon/night_wind.png'
+import DaySnow from '@/icon/day_snow.png'
+import NightSnow from '@/icon/night_snow.png'
+import DayStorm from '@/icon/day_storm.png'
+import NightStorm from '@/icon/night_storm.png'
+import DayRain from '@/icon/day_rain.png'
+import NightRain from '@/icon/night_rain.png'
+
 /**
  * @description 根据天气图标icon值返回具体图标
  */
@@ -19,7 +32,7 @@ export function renderIcon (iconCode: string, day?: boolean) {
     case '805':
     case '806':
     case '807':
-      return `/src/icon/${ isNight ? 'night' : 'day' }_sun.png`
+      return isNight ? NightSun : DaySun
     /** 雨天 */
     case '300':
     case '301':
@@ -40,7 +53,7 @@ export function renderIcon (iconCode: string, day?: boolean) {
     case '350':
     case '351':
     case '399':
-      return `/src/icon/${ isNight ? 'night' : 'day' }_rain.png`
+      return isNight ? NightRain : DayRain
     /** 多云 */
     case '101':
     case '102':
@@ -62,11 +75,11 @@ export function renderIcon (iconCode: string, day?: boolean) {
     case '513':
     case '514':
     case '515':
-      return `/src/icon/${ isNight ? 'night' : 'day' }_clouds.png`
+      return isNight ? NightClouds : DayClouds
     /** 大风 */
     case '507':
     case '508':
-      return `/src/icon/${ isNight ? 'night' : 'day' }_wind.png`
+      return isNight ? NightWind : DayWind
     /** 下雪 */
     case '400':
     case '401':
@@ -82,12 +95,12 @@ export function renderIcon (iconCode: string, day?: boolean) {
     case '456':
     case '457':
     case '499':
-      return `/src/icon/${ isNight ? 'night' : 'day' }_snow.png`
+      return isNight ? NightSnow : DaySnow
     /** 打雷 */
     case '302':
     case '303':
     case '304':
-      return `/src/icon/${ isNight ? 'night' : 'day' }_storm.png`
-    default: return `/src/icon/${ isNight ? 'night' : 'day' }_sun.png`
+      return isNight ? NightStorm : DayStorm
+    default: return isNight ? NightSun : DaySun
   }
 }

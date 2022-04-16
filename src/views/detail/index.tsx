@@ -35,7 +35,7 @@ export default function Detail () {
   })
   const [hourlyWeather, setHourlyWeather] = useState<WeatherHourly[]>([])
   const [dailyWeather, setDailyWeather] = useState<WeatherDaily[]>([])
-  const location = decodeURIComponent(useParams().location!)
+  const location = window.atob(useParams().location!)
   const navigate = useNavigate()
 
   function handleWeatherInfoInit () {
@@ -128,7 +128,7 @@ export default function Detail () {
       const HourlyChart = (
         <Canvas context={ context }>
           <Chart data={ hourlyWeather } scale={ hourlyScale }>
-            <Axis field="fxTime" style={{ grid: { opacity: 0 }, label: { fontFamily: 'Alegreya Sans', fontWeight: 'bold', fontSize: 14 * window.devicePixelRatio } }} />
+            <Axis field="fxTime" style={{ grid: { opacity: 0 }, label: { fontFamily: 'Alegreya Sans', fontWeight: 'bold', fontSize: 14 } }} />
             <Axis field="temp" visible={ false } />
             <Line x="fxTime" y="temp" shape="smooth" color="#E9C939" />
             <Area x="fxTime" y="temp" color="rgba(233, 201, 57, 0.25)" />
@@ -166,7 +166,7 @@ export default function Detail () {
         <i className="back" onClick={ handleNavBack } />
         <div className="weather-base">
           <section className="naming">
-            <p className="name">{ name.split(',').join('\n') }</p>
+            <p className="name">{ (name || '--,--').split(',').join('\n') }</p>
             <p className="value">{ temp }</p>
           </section>
           <img className="icon" src={ renderIcon(icon) } />

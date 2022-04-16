@@ -28,7 +28,7 @@ export default function WeatherPanel (props: WeatherPanelProps) {
   }
 
   function handleDetailView (longitude: number, latitude: number) {
-    navigate(`/detail/${ encodeURIComponent(`${ longitude },${ latitude }`) }`)
+    navigate(`./detail/${ window.btoa(`${ longitude },${ latitude }`) }`)
   }
 
   const {

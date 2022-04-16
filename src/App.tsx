@@ -19,31 +19,38 @@ interface RouteConfig {
 
 const routes = [
   {
-    path: '/',
+    path: '/weather/',
     component: React.lazy(() => import('@/views/home/index')),
   }, {
-    path: '/detail/:location',
+    path: '/weather/detail/:location',
     component: React.lazy(() => import('@/views/detail/index')),
   },
 ]
 
+export function withSuspense (element: React.LazyExoticComponent<(props: any) => JSX.Element>) {
+  const CurrentElement = element
+  return (
+    <React.Suspense fallback={ <></> }>
+      <CurrentElement />
+    </React.Suspense>
+  )
+}
+
 function lazyRender (config: RouteConfig) {
   const { path, component: LazyComponent } = config
   return (
-    <Route key={ path } path={ path } element={ <LazyComponent /> } />
+    <Route key={ path } path={ path } element={ withSuspense(LazyComponent) } />
   )
 }
 
 function App () {
   return (
     <div className="App">
-      <React.Suspense fallback={ <></> }>
-        <BrowserRouter>
-          <Routes>
-            { routes.map((routeConfig) => lazyRender(routeConfig)) }
-          </Routes>
-        </BrowserRouter>
-      </React.Suspense>
+      <BrowserRouter>
+        <Routes>
+          { routes.map((routeConfig) => lazyRender(routeConfig)) }
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }
