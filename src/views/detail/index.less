@@ -179,5 +179,26 @@
   .view__detail {
     padding: 0 200px;
     box-sizing: border-box;
+
+    .weather-hourly {
+      .container-wrapper {
+        &::-webkit-scrollbar {
+          display: block;
+          border-radius: 12px;
+          height: 8px;
+          background: #f7f7f7;
+        }
+        &::-webkit-scrollbar-track {
+          padding: 4px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 12px;
+          background: #ddd;
+          &:hover {
+            background: #ccc;
+          }
+        }
+      }
+    }
   }
 }
